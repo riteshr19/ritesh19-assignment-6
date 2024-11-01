@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS506 Assignment 6 - Linear Regression</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        header {
+            background: #50b3a2;
+            color: #fff;
+            padding-top: 30px;
+            min-height: 70px;
+            border-bottom: #e8491d 3px solid;
+        }
+        header h1 {
+            text-align: center;
+            text-transform: uppercase;
+            margin: 0;
+            font-size: 24px;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        form label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        form input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        form button {
+            display: block;
+            width: 100%;
+            background: #50b3a2;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        form button:hover {
+            background: #45a089;
+        }
+        .results {
+            background: #fff;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .results h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .results img {
+            display: block;
+            margin: 0 auto 20px;
+            max-width: 100%;
+            height: auto;
+        }
+        .results p {
+            text-align: center;
+            font-size: 18px;
+        }
+    </style>
+    <script>
+        function clearForm() {
+            document.getElementById('N').value = '';
+            document.getElementById('mu').value = '';
+            document.getElementById('sigma2').value = '';
+            document.getElementById('S').value = '';
+        }
+
+        function fillRandomValues() {
+            document.getElementById('N').value = Math.floor(Math.random() * 100) + 10;
+            document.getElementById('mu').value = (Math.random() * 10).toFixed(2);
+            document.getElementById('sigma2').value = (Math.random() * 10).toFixed(2);
+            document.getElementById('S').value = Math.floor(Math.random() * 100) + 10;
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>CS506 Assignment 6 - Linear Regression</h1>
+    </header>
+    <div class="container">
+        <form method="post">
+            <label for="N">Sample size (N):</label>
+            <input type="number" id="N" name="N" required>
+            
+            <label for="mu">Mean (mu):</label>
+            <input type="number" step="any" id="mu" name="mu" required>
+            
+            <label for="sigma2">Variance (sigma²):</label>
+            <input type="number" step="any" id="sigma2" name="sigma2" required>
+            
+            <label for="S">Number of simulations (S):</label>
+            <input type="number" id="S" name="S" required>
+            
+            <button type="submit">Generate</button>
+            <button type="button" onclick="clearForm()">Clear</button>
+            <button type="button" onclick="fillRandomValues()">Random</button>
+        </form>
+
+        {% if plot1 and plot2 %}
+        <div class="results">
+            <h2>Results</h2>
+            <div>
+                <h3>Scatter Plot and Regression Line</h3>
+                <img src="{{ url_for('static', filename=plot1.split('/')[-1]) }}" alt="Scatter Plot and Regression Line">
+            </div>
+            <div>
+                <h3>Histogram of Slopes and Intercepts</h3>
+                <img src="{{ url_for('static', filename=plot2.split('/')[-1]) }}" alt="Histogram of Slopes and Intercepts">
+            </div>
+            <div>
+                <p>Proportion of slopes more extreme than the initial dataset: {{ slope_extreme }}</p>
+                <p>Proportion of intercepts more extreme than the initial dataset: {{ intercept_extreme }}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
